@@ -267,6 +267,15 @@ document.querySelectorAll('[data-go],.mark').forEach(a=>a.addEventListener('clic
 /* project overlay */
 const ov=$('#ov');let cur=0,last=null;
 const fill=i=>{cur=(i+P.length)%P.length;const p=P[cur];ov.style.background=p.bg;ov.style.color=p.fg;ov.innerHTML=`<div class="pic">${art(p,cur)}</div><div><p class="m">N°0${cur+1} / ${p.c} / ${p.y}</p><h2 style="${p.s?"font-family:var(--s);font-style:italic;font-weight:400":`font-variation-settings:${p.v}`}">${p.n}</h2><p>Placeholder project text. Context, process and credits for this piece will sit here, with more large images below.</p><div class="b"><button data-p>Previous</button><button data-n>Next</button><button data-x>Close</button></div></div>`;ov.querySelector('[data-x]').focus()};
+let projectNavigationBusy=false;
+const navigateProject=(i,direction)=>{
+  if(projectNavigationBusy||!ov.classList.contains('on'))return;
+  projectNavigationBusy=true;
+  goProject(()=>{
+    fill(i);
+    ov.scrollTop=0;
+  },direction).finally(()=>{projectNavigationBusy=false});
+};
 const openP=i=>{last=document.activeElement;go(()=>{fill(i);ov.classList.add('on');document.body.style.overflow='hidden';ov.scrollTop=0;ov.querySelector('[data-x]').focus()})};
 const closeP=()=>go(()=>{ov.classList.remove('on');document.body.style.overflow='';last&&last.focus()});
 document.addEventListener('click',e=>{const a=e.target.closest('[data-i]');if(a){e.preventDefault();openP(+a.dataset.i);return}
