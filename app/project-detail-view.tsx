@@ -1,19 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { Project } from './projects';
 
 type Props = { project: Project; previous: Project; next: Project; index: number; total: number };
 
 export default function ProjectDetail({ project, previous, next, index, total }: Props) {
-  const router = useRouter();
   const [transition, setTransition] = useState<'next' | 'previous' | null>(null);
   function navigate(target: Project, direction: 'next' | 'previous') {
     if (transition) return;
     setTransition(direction);
-    window.setTimeout(() => router.push(`/${target.collection}/${target.slug}`), 390);
+    window.setTimeout(() => window.location.assign(`/${target.collection}/${target.slug}`), 390);
   }
   return (
     <main className="project-detail-page">
