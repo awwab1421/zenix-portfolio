@@ -270,8 +270,8 @@ const fill=i=>{cur=(i+P.length)%P.length;const p=P[cur];ov.style.background=p.bg
 const openP=i=>{last=document.activeElement;go(()=>{fill(i);ov.classList.add('on');document.body.style.overflow='hidden';ov.scrollTop=0;ov.querySelector('[data-x]').focus()})};
 const closeP=()=>go(()=>{ov.classList.remove('on');document.body.style.overflow='';last&&last.focus()});
 document.addEventListener('click',e=>{const a=e.target.closest('[data-i]');if(a){e.preventDefault();openP(+a.dataset.i);return}
-if(e.target.closest('[data-x]'))closeP();if(e.target.closest('[data-p]'))fill(cur-1);if(e.target.closest('[data-n]'))fill(cur+1)});
-addEventListener('keydown',e=>{if(!ov.classList.contains('on'))return;if(e.key==='Escape')closeP();if(e.key==='ArrowLeft')fill(cur-1);if(e.key==='ArrowRight')fill(cur+1)});
+if(e.target.closest('[data-x]'))closeP();if(e.target.closest('[data-p]'))navigateProject(cur-1,-1);if(e.target.closest('[data-n]'))navigateProject(cur+1,1)});
+addEventListener('keydown',e=>{if(!ov.classList.contains('on'))return;if(e.key==='Escape'){if(!projectNavigationBusy)closeP();return}if(projectNavigationBusy)return;if(e.key==='ArrowLeft')navigateProject(cur-1,-1);if(e.key==='ArrowRight')navigateProject(cur+1,1)});
 
 /* clock */
 const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dhaka',hour:'2-digit',minute:'2-digit',hour12:false});
