@@ -161,7 +161,7 @@ footer{padding:40px clamp(16px,3vw,40px) 60px;font:400 .78rem/1.6 var(--m);color
 <div class="nav">
   <a href="#hero" class="mark" aria-label="ZENIX home"><svg viewBox="0 0 24 28" fill="currentColor"><path d="M14 0 2 15h8L7 28l15-17h-9z"/></svg></a>
   <div>
-    <nav class="links" aria-label="Main"><a href="#work" data-go>Work</a><a href="#collage" data-go>Collage</a><a href="#about" data-go>About</a><a href="#contact" data-go>Contact</a></nav>
+    <nav class="links" aria-label="Main"><a href="/personal">Personal</a><a href="/professional">Professional</a><a href="#about" data-go>About</a><a href="#contact" data-go>Contact</a></nav>
     <div class="clock"><i></i>Dhaka <span id="ck">--:--</span></div>
   </div>
 </div>
@@ -179,14 +179,11 @@ footer{padding:40px clamp(16px,3vw,40px) 60px;font:400 .78rem/1.6 var(--m);color
 </section>
 
 <section id="work">
-  <div class="sh"><span>Selected work</span><i class="ln"></i><span>Index of placeholders</span></div>
-  <ol class="idx" id="idx"></ol>
-  <div id="pv" aria-hidden="true"></div>
-</section>
-
-<section id="collage">
-  <div class="sh"><span>Collage view</span><i class="ln"></i><span>Placeholders</span></div>
-  <div class="col" id="col"></div>
+  <div class="sh"><span>Choose your archive</span><i class="ln"></i><span>Two sides of ZENIX</span></div>
+  <div class="archive-grid">
+    <a class="archive-card" href="/personal"><span class="archive-no">01 / PERSONAL</span><strong>Made for<br><i>the love of it.</i></strong><span class="archive-foot">Posters, experiments, hobby projects <b>↗</b></span></a>
+    <a class="archive-card" href="/professional"><span class="archive-no">02 / PROFESSIONAL</span><strong>Made for<br><i>the real world.</i></strong><span class="archive-foot">Brand work, identities, commissions <b>↗</b></span></a>
+  </div>
 </section>
 <section id="about">
   <div class="sh"><span>About</span><i class="ln"></i><span>Placeholders until supplied</span></div>
@@ -226,13 +223,7 @@ footer{padding:40px clamp(16px,3vw,40px) 60px;font:400 .78rem/1.6 var(--m);color
 <div id="cu" aria-hidden="true"><svg viewBox="0 0 24 28" fill="currentColor" width="26"><path d="M14 0 2 15h8L7 28l15-17h-9z"/></svg><b></b></div>
 
 <script>
-const P=[
-{n:'Static Bloom',c:'Poster, typography',y:'2026',bg:'#2c5a2a',fg:'#E9F2C9',ac:'#D5FF00',L:['STATIC','BLOOM'],fs:118,g:[300,170,210],v:"'wdth' 150,'wght' 900"},
-{n:'Red Hours',c:'Portrait poster',y:'2026',bg:'#A3141C',fg:'#8BE9EC',ac:'#FF5A4D',L:['RED','HOURS'],fs:150,g:[120,330,190],v:"'wdth' 55,'wght' 900"},
-{n:'Night Drive',c:'Key art',y:'2025',bg:'#0C1B86',fg:'#FF3B30',ac:'#4D7BFF',L:['Night','Drive'],s:1,fs:128,g:[200,300,230]},
-{n:'Thin Walls',c:'Experimental type',y:'2025',bg:'#0E1011',fg:'#BFE6F2',ac:'#6FB7D6',L:['THE','WALLS','ARE','THIN'],fs:110,g:[330,120,160],v:"'wdth' 150,'wght' 200"},
-{n:'Echo Room',c:'Editorial, illustration',y:'2025',bg:'#3A0D12',fg:'#F0C9C4',ac:'#E0453A',L:['Echoes','within'],s:1,fs:112,g:[200,260,200]},
-{n:'Signal Bolt',c:'Cover art',y:'2026',bg:'#131515',fg:'#F2F0E9',ac:'#D5FF00',L:['ALBUM','ART','SAMPLE'],fs:112,g:[90,400,150],v:"'wdth' 100,'wght' 900"}];
+const P=[];
 let K=0;
 const art=(p,i)=>{const k=++K,[gx,gy,gr]=p.g;
 const T=p.L.map((s,j)=>{const y=p.fs*.85+14+j*p.fs*(p.s?.8:.88);return p.s?`<text x="20" y="${y}" font-family="Instrument Serif" font-style="italic" font-size="${p.fs}" fill="${p.fg}">${s}</text>`:`<text x="16" y="${y}" textLength="368" lengthAdjust="spacingAndGlyphs" font-family="Anybody" font-weight="900" font-size="${p.fs}" fill="${p.fg}">${s}</text>`}).join('');
