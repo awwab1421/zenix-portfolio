@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getProjects } from './projects';
 
 type CollectionProps = { kind: 'personal' | 'professional' };
 
@@ -28,16 +29,16 @@ export default function CollectionPage({ kind }: CollectionProps) {
         <span className="collection-kicker">{item.label} — ZENIX</span>
         <h1 className="collection-title">{item.title}</h1>
         <p style={{maxWidth: '560px', color: '#85898B', fontSize: 'clamp(15px, 1.5vw, 19px)', lineHeight: 1.6, margin: '0 0 56px'}}>{item.description}</p>
-        <div className="archive-placeholders" aria-label="Placeholder projects">
-          {['PROJECT TITLE','PROJECT TITLE','PROJECT TITLE'].map((title, index) => (
-            <article className={`archive-placeholder archive-placeholder-${index + 1}`} key={index}>
+        <div className="archive-placeholders" aria-label="Projects">
+          {getProjects(kind).map((project, index) => (
+            <Link className={`archive-placeholder archive-placeholder-${index + 1}`} href={`/${kind}/${project.slug}`} key={project.slug}>
               <div className="placeholder-art">
-                <span>ZENIX / 00{index + 1}</span>
-                <strong>{kind === 'personal' ? ['POSTER STUDY','TYPE EXPERIMENT','VISUAL PLAY'][index] : ['BRAND IDENTITY','CAMPAIGN STUDY','ART DIRECTION'][index]}</strong>
-                <small>ARTWORK PLACEHOLDER</small>
+                <span>ZENIX / {project.label}</span>
+                <strong>{project.title.toUpperCase()}</strong>
+                <small>PROJECT PREVIEW PLACEHOLDER</small>
               </div>
-              <div className="placeholder-caption"><span>{title}</span><span>COMING SOON</span></div>
-            </article>
+              <div className="placeholder-caption"><span>{project.title}</span><span>{project.year}</span></div>
+            </Link>
           ))}
         </div>
       </section>
