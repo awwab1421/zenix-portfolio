@@ -260,17 +260,22 @@ const sh=$('#sh');
 const go=fn=>{if(RM){fn();return}
 const o={duration:420,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'};
 sh.animate([{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0)'}],o).finished.then(()=>{fn();return sh.animate([{clipPath:'inset(0)'},{clipPath:'inset(0 0 100% 0)'}],o).finished})};
+const goProject=(fn,direction)=>{if(RM){fn();return Promise.resolve()}
+const from=direction>0?'inset(0 0 0 100%)':'inset(0 100% 0 0)';
+const to=direction>0?'inset(0 100% 0 0)':'inset(0 0 0 100%)';
+const o={duration:420,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'};
+return sh.animate([{clipPath:from},{clipPath:'inset(0)'}],o).finished.then(()=>{fn();return sh.animate([{clipPath:'inset(0)'},{clipPath:to}],o).finished})};
 document.querySelectorAll('[data-go],.mark').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));go(()=>window.scrollTo({top:t.offsetTop,behavior:'instant'}))}));
 
 /* project overlay */
 const ov=$('#ov');let cur=0,last=null,projectNavigationBusy=false;
 const fill=i=>{cur=(i+P.length)%P.length;const p=P[cur];ov.style.background=p.bg;ov.style.color=p.fg;const previous=ov.querySelector('.project-slide');const slide=document.createElement('div');slide.className='project-slide';slide.innerHTML=`<div class="pic">${art(p,cur)}</div><div><p class="m">N°0${cur+1} / ${p.c} / ${p.y}</p><h2 style="${p.s?"font-family:var(--s);font-style:italic;font-weight:400":`font-variation-settings:${p.v}`}">${p.n}</h2><p>Placeholder project text. Context, process and credits for this piece will sit here, with more large images below.</p><div class="b"><button data-p>Previous</button><button data-n>Next</button><button data-x>Close</button></div></div>`;if(previous)previous.remove();ov.appendChild(slide);slide.querySelector('[data-x]').focus()};
-const navigateProject=i=>{if(projectNavigationBusy)return;projectNavigationBusy=true;go(()=>{fill(i);projectNavigationBusy=false})};
+const navigateProject=(i,direction)=>{if(projectNavigationBusy)return;projectNavigationBusy=true;goProject(()=>fill(i),direction).catch(()=>{}).finally(()=>{projectNavigationBusy=false})};
 const openP=i=>{last=document.activeElement;go(()=>{fill(i);ov.classList.add('on');document.body.style.overflow='hidden';ov.scrollTop=0;ov.querySelector('[data-x]').focus()})};
 const closeP=()=>go(()=>{ov.classList.remove('on');document.body.style.overflow='';last&&last.focus()});
 document.addEventListener('click',e=>{const a=e.target.closest('[data-i]');if(a){e.preventDefault();openP(+a.dataset.i);return}
-if(e.target.closest('[data-x]'))closeP();if(e.target.closest('[data-p]'))navigateProject(cur-1);if(e.target.closest('[data-n]'))navigateProject(cur+1)});
-addEventListener('keydown',e=>{if(!ov.classList.contains('on'))return;if(e.key==='Escape'){if(!projectNavigationBusy)closeP();return}if(projectNavigationBusy)return;if(e.key==='ArrowLeft')navigateProject(cur-1);if(e.key==='ArrowRight')navigateProject(cur+1)});
+if(e.target.closest('[data-x]'))closeP();if(e.target.closest('[data-p]'))navigateProject(cur-1,-1);if(e.target.closest('[data-n]'))navigateProject(cur+1,1)});
+addEventListener('keydown',e=>{if(!ov.classList.contains('on'))return;if(e.key==='Escape'){if(!projectNavigationBusy)closeP();return}if(projectNavigationBusy)return;if(e.key==='ArrowLeft')navigateProject(cur-1,-1);if(e.key==='ArrowRight')navigateProject(cur+1,1)});
 
 /* clock */
 const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dhaka',hour:'2-digit',minute:'2-digit',hour12:false});
