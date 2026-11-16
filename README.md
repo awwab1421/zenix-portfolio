@@ -45,3 +45,13 @@ Import this GitHub repository into Vercel and select the `build/stage-1-foundati
 ## Verification status
 
 This environment can commit source files to GitHub but cannot run `npm install`, launch a browser, or execute a Vercel production build. A real deployment is still required to verify dependency installation, compilation, browser behavior, mobile layout, and accessibility.
+
+
+## Project detail pages
+
+The Personal and Professional archive cards now open dedicated project URLs.
+
+- Personal: `/personal/poster-study`, `/personal/type-experiment`, `/personal/visual-play`
+- Professional: `/professional/brand-identity`, `/professional/campaign-study`, `/professional/art-direction`
+
+Project copy and artwork are placeholders. Shared project data lives in `app/projects.ts`; the reusable detail layout is `app/project-detail-view.tsx`. Each page includes previous/next navigation and a return link to its archive.
