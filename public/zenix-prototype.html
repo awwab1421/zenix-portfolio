@@ -136,7 +136,7 @@ footer{padding:40px clamp(16px,3vw,40px) 60px;font:400 .78rem/1.6 var(--m);color
 #ov{position:fixed;inset:0;z-index:70;display:none;overflow:auto;padding:clamp(60px,9vh,100px) clamp(16px,3vw,40px) 40px}
 #ov.on{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:4vw;align-items:start}
 #ov .pic{clip-path:none}
-#ov .project-slide{grid-area:1/1;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:4vw;align-items:start;min-width:0;will-change:transform,opacity}
+#ov .project-slide{grid-column:1/-1;grid-row:1;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:4vw;align-items:start;min-width:0;will-change:transform,opacity}
 #ov .project-slide .pic{min-width:0}
 @media (prefers-reduced-motion:reduce){#ov .project-slide{will-change:auto}}
 #ov .pic svg{max-height:80svh;width:auto;margin:auto}
@@ -263,13 +263,13 @@ sh.animate([{clipPath:'inset(100% 0 0 0)'},{clipPath:'inset(0)'}],o).finished.th
 document.querySelectorAll('[data-go],.mark').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));go(()=>window.scrollTo({top:t.offsetTop,behavior:'instant'}))}));
 
 /* project overlay */
-const ov=$('#ov');let cur=0,last=null;
-const fill=(i,direction=0)=>{cur=(i+P.length)%P.length;const p=P[cur];ov.style.background=p.bg;ov.style.color=p.fg;const previous=ov.querySelector('.project-slide');const slide=document.createElement('div');slide.className='project-slide';slide.innerHTML=`<div class="pic">${art(p,cur)}</div><div><p class="m">N°0${cur+1} / ${p.c} / ${p.y}</p><h2 style="${p.s?"font-family:var(--s);font-style:italic;font-weight:400":`font-variation-settings:${p.v}`}">${p.n}</h2><p>Placeholder project text. Context, process and credits for this piece will sit here, with more large images below.</p><div class="b"><button data-p>Previous</button><button data-n>Next</button><button data-x>Close</button></div></div>`;ov.appendChild(slide);if(previous&&direction&&!RM){const distance= Math.min(innerWidth*.24,260);slide.animate([{transform:`translateX(${direction*distance}px)`,opacity:.35},{transform:'translateX(0)',opacity:1}],{duration:520,easing:'cubic-bezier(.22,.8,.2,1)'});previous.animate([{transform:'translateX(0)',opacity:1},{transform:`translateX(${-direction*distance}px)`,opacity:.25}],{duration:520,easing:'cubic-bezier(.22,.8,.2,1)'}).finished.then(()=>previous.remove())}else if(previous)previous.remove();slide.querySelector('[data-x]').focus()};
+const ov=$('#ov');let cur=0,last=null,projectAnimating=false;
+const fill=(i,direction=0)=>{if(projectAnimating)return;cur=(i+P.length)%P.length;const p=P[cur];ov.style.background=p.bg;ov.style.color=p.fg;const previous=ov.querySelector('.project-slide');const slide=document.createElement('div');slide.className='project-slide';slide.innerHTML=`<div class="pic">${art(p,cur)}</div><div><p class="m">N°0${cur+1} / ${p.c} / ${p.y}</p><h2 style="${p.s?"font-family:var(--s);font-style:italic;font-weight:400":`font-variation-settings:${p.v}`}">${p.n}</h2><p>Placeholder project text. Context, process and credits for this piece will sit here, with more large images below.</p><div class="b"><button data-p>Previous</button><button data-n>Next</button><button data-x>Close</button></div></div>`;ov.appendChild(slide);if(previous&&direction&&!RM){projectAnimating=true;const distance=Math.min(innerWidth*.24,260);const enter=slide.animate([{transform:`translateX(${direction*distance}px)`,opacity:.35},{transform:'translateX(0)',opacity:1}],{duration:520,easing:'cubic-bezier(.22,.8,.2,1)'});const leave=previous.animate([{transform:'translateX(0)',opacity:1},{transform:`translateX(${-direction*distance}px)`,opacity:.25}],{duration:520,easing:'cubic-bezier(.22,.8,.2,1)'});Promise.all([enter.finished,leave.finished]).then(()=>{previous.remove();projectAnimating=false}).catch(()=>{previous.remove();projectAnimating=false})}else if(previous)previous.remove();slide.querySelector('[data-x]').focus()};
 const openP=i=>{last=document.activeElement;go(()=>{fill(i);ov.classList.add('on');document.body.style.overflow='hidden';ov.scrollTop=0;ov.querySelector('[data-x]').focus()})};
 const closeP=()=>go(()=>{ov.classList.remove('on');document.body.style.overflow='';last&&last.focus()});
 document.addEventListener('click',e=>{const a=e.target.closest('[data-i]');if(a){e.preventDefault();openP(+a.dataset.i);return}
 if(e.target.closest('[data-x]'))closeP();if(e.target.closest('[data-p]'))fill(cur-1,-1);if(e.target.closest('[data-n]'))fill(cur+1,1)});
-addEventListener('keydown',e=>{if(!ov.classList.contains('on'))return;if(e.key==='Escape')closeP();if(e.key==='ArrowLeft')fill(cur-1,-1);if(e.key==='ArrowRight')fill(cur+1,1)});
+addEventListener('keydown',e=>{if(!ov.classList.contains('on'))return;if(e.key==='Escape'){if(!projectAnimating)closeP();return}if(projectAnimating)return;if(e.key==='ArrowLeft')fill(cur-1,-1);if(e.key==='ArrowRight')fill(cur+1,1)});
 
 /* clock */
 const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dhaka',hour:'2-digit',minute:'2-digit',hour12:false});
