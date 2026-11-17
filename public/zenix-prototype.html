@@ -33,6 +33,8 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .wall,.wall>div{position:absolute;inset:0}
 .wall{opacity:.55}
 .lb{filter:blur(16px) brightness(.8)}
+.low-power .lb{filter:blur(8px) brightness(.82)}
+.low-power .ls{display:none}
 .ls{-webkit-mask-image:radial-gradient(circle 230px at var(--mx,-600px) var(--my,-600px),#000 35%,transparent);mask-image:radial-gradient(circle 230px at var(--mx,-600px) var(--my,-600px),#000 35%,transparent)}
 .tl{position:absolute;width:var(--w);left:var(--x);top:var(--y);transform:rotate(var(--r))}
 .in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;will-change:transform,opacity}
@@ -234,7 +236,8 @@ let K=0;
 const art=(p,i)=>{const k=++K,[gx,gy,gr]=p.g;
 const T=p.L.map((s,j)=>{const y=p.fs*.85+14+j*p.fs*(p.s?.8:.88);return p.s?`<text x="20" y="${y}" font-family="Instrument Serif" font-style="italic" font-size="${p.fs}" fill="${p.fg}">${s}</text>`:`<text x="16" y="${y}" textLength="368" lengthAdjust="spacingAndGlyphs" font-family="Anybody" font-weight="900" font-size="${p.fs}" fill="${p.fg}">${s}</text>`}).join('');
 return `<svg width="400" height="500" viewBox="0 0 400 500" role="img" aria-label="Placeholder artwork: ${p.n}"><defs><radialGradient id="g${k}"><stop offset="0" stop-color="${p.ac}" stop-opacity=".85"/><stop offset="1" stop-color="${p.ac}" stop-opacity="0"/></radialGradient><pattern id="h${k}" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.3" fill="${p.fg}"/></pattern></defs><rect width="400" height="500" fill="${p.bg}"/><circle cx="${gx}" cy="${gy}" r="${gr}" fill="url(#g${k})"/><rect width="400" height="500" fill="url(#h${k})" opacity=".16"/><path d="M0 ${380-i*20}L400 ${300+i*25}" stroke="${p.ac}" stroke-width="1.5"/>${T}<text x="16" y="486" font-family="Space Mono" font-size="10" fill="${p.fg}" opacity=".8">Placeholder N°0${i+1}</text></svg>`};
-const $=s=>document.querySelector(s),RM=matchMedia('(prefers-reduced-motion:reduce)').matches,FINE=matchMedia('(hover:hover) and (pointer:fine)').matches;
+const $=s=>document.querySelector(s),RM=matchMedia('(prefers-reduced-motion:reduce)').matches,FINE=matchMedia('(hover:hover) and (pointer:fine)').matches,LOW_POWER=(navigator.deviceMemory&&navigator.deviceMemory<=4)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4);
+if(LOW_POWER)document.documentElement.classList.add('low-power');
 const rootEl=document.documentElement;
 
 /* hero wall */
@@ -297,7 +300,7 @@ const W=L.map(()=>100);
 if(FINE&&!RM){rootEl.classList.add('cur');
 addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;mx=e.clientX;my=e.clientY;tx=mx;ty=my;
 const d=e.target.closest('[data-cursor]');cu.classList.toggle('big',!!d);if(d)lab.textContent=d.dataset.cursor;
-const a=e.target.closest('#idx [data-i]');const h=a?+a.dataset.i:-1;if(h!==hov){hov=h;[...pv.children].forEach((c,j)=>c.style.display=j===h?'block':'none');pv.classList.toggle('on',h>=0)}});
+const a=e.target.closest('#idx [data-i]');const h=a?+a.dataset.i:-1;if(h!==hov){hov=h;[...pv.children].forEach((c,j)=>c.style.display=j===h?'block':'none');pv.classList.toggle('on',h>=0)}requestFrame()});
 document.addEventListener('mouseleave',()=>{tx=-100;ty=-100});
 $('#idx').addEventListener('focusin',e=>{const a=e.target.closest('[data-i]');if(a){const h=+a.dataset.i;[...pv.children].forEach((c,j)=>c.style.display=j===h?'block':'none');pv.classList.add('on');px=innerWidth*.6;py=innerHeight*.2;pv.style.transform=`translate(${px}px,${py}px)`}});
 $('#idx').addEventListener('focusout',()=>pv.classList.remove('on'));
@@ -316,16 +319,26 @@ nm.addEventListener('focus',()=>set(true));nm.addEventListener('blur',()=>set(fa
 nm.addEventListener('keydown',e=>{if(e.key==='Escape')set(false)});
 document.addEventListener('pointerdown',e=>{if(!nm.contains(e.target))set(false)})};
 pr.src='/images/nayel-face.svg'}
-const frame=()=>{const sc=scrollY,p=Math.min(1,sc/innerHeight);
-if(sc<innerHeight){hero.firstElementChild.nextElementSibling.style.cssText=`transform:translateY(${p*14}vh);opacity:${1-p*1.1}`;
-if(FINE&&!RM){sx+=(mx-sx)*.12;sy+=(my-sy)*.12;hero.style.setProperty('--mx',sx+'px');hero.style.setProperty('--my',sy+'px');
-L.forEach((l,i)=>{const r=l.getBoundingClientRect(),dx=mx<0?0:Math.abs(mx-(r.left+r.width/2))/innerWidth,t=mx<0?.2:Math.exp(-Math.pow(dx/.2,2)/2),w=mx<0?100:66+86*t;W[i]+=(w-W[i])*.1;l.style.fontVariationSettings=`'wdth' ${W[i].toFixed(1)}`})}}
-if(FINE&&!RM){cx+=(tx-cx)*.25;cy+=(ty-cy)*.25;cu.style.transform=`translate(${cx}px,${cy}px)`;
+let raf=0,letterCenters=L.map(l=>{const r=l.getBoundingClientRect();return r.left+r.width/2});
+const requestFrame=()=>{if(!raf&&!document.hidden)raf=requestAnimationFrame(frame)};
+const updateLetterCenters=()=>{letterCenters=L.map(l=>{const r=l.getBoundingClientRect();return r.left+r.width/2})};
+const frame=()=>{raf=0;const sc=scrollY,p=Math.min(1,sc/innerHeight);
+if(sc<innerHeight){hero.firstElementChild.nextElementSibling.style.transform=`translateY(${p*14}vh)`;hero.firstElementChild.nextElementSibling.style.opacity=1-p*1.1}
+let moving=false;
+if(FINE&&!RM){
+sx+=(mx-sx)*.12;sy+=(my-sy)*.12;
+if(!LOW_POWER){hero.style.setProperty('--mx',sx+'px');hero.style.setProperty('--my',sy+'px')}
+L.forEach((l,i)=>{const dx=mx<0?0:Math.abs(mx-letterCenters[i])/innerWidth,t=mx<0?.2:Math.exp(-Math.pow(dx/.2,2)/2),w=mx<0?100:66+86*t;W[i]+=(w-W[i])*.1;l.style.fontVariationSettings=`'wdth' ${W[i].toFixed(1)}`;if(Math.abs(w-W[i])>.7)moving=true});
+cx+=(tx-cx)*.25;cy+=(ty-cy)*.25;cu.style.transform=`translate(${cx}px,${cy}px)`;
 const w=pv.offsetWidth,gx=mx+32+w>innerWidth-16?mx-w-32:mx+32,gy=Math.max(70,Math.min(innerHeight-pv.offsetHeight-16,my-pv.offsetHeight/2));
-px+=(gx-px)*.14;py+=(gy-py)*.14;
-pv.style.transform=`translate(${px}px,${py}px) rotate(${Math.max(-4,Math.min(4,(gx-px)*.05))}deg)`}
-requestAnimationFrame(frame)};
-requestAnimationFrame(frame);
+px+=(gx-px)*.14;py+=(gy-py)*.14;pv.style.transform=`translate(${px}px,${py}px) rotate(${Math.max(-4,Math.min(4,(gx-px)*.05))}deg)`;
+if(Math.abs(mx-sx)>1||Math.abs(my-sy)>1||Math.abs(tx-cx)>1||Math.abs(ty-cy)>1||Math.abs(gx-px)>1||Math.abs(gy-py)>1)moving=true;
+}
+if(moving)requestFrame()};
+addEventListener('scroll',requestFrame,{passive:true});
+addEventListener('resize',()=>{updateLetterCenters();requestFrame()},{passive:true});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestFrame()});
+requestFrame();
 </script>
 </body>
 </html>
