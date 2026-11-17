@@ -154,6 +154,11 @@ footer{padding:40px clamp(16px,3vw,40px) 60px;font:400 .78rem/1.6 var(--m);color
 @media (hover:none){.lb{filter:blur(3px) brightness(.8)}.ls{display:none}.idx a{grid-template-columns:2rem 1fr 56px}.idx .y,.idx em{display:none}.th{display:block}.idx .t{font-size:clamp(1.8rem,9vw,3rem)}}
 @media (max-width:760px){.col{display:block}.col figure{margin:0 0 12vh!important;width:88%}.col figure:nth-child(even){margin-left:12%!important}#ov.on{display:block}#ov .pic svg{max-height:none;width:100%}.links{gap:12px;font-size:.95rem}.ab{display:block}.ab>*{margin:0 0 7vh!important;transform:rotate(-1deg)}.ab>*:nth-child(even){transform:rotate(1.2deg)}.ab .f1,.ab .f2,.ab .f3{width:68%}.ab .f2,.ab .f3{margin-left:auto!important}.cw{display:block}.cw>*+*{margin-top:6vh}.lk a,.lk div{grid-template-columns:5.5rem 1fr auto}}
 @media (prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}.pic{clip-path:none}.sh .ln{transform:none}}
+/* Let the animated grain background show through every homepage section */
+html, body, main, main > section, footer {
+  background: transparent !important;
+}
+
 </style>
 
 <script type="importmap">
