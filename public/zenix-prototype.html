@@ -37,7 +37,7 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .tl{position:absolute;width:var(--w);left:var(--x);top:var(--y);transform:rotate(var(--r))}
 .in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;will-change:transform,opacity}
 h1{margin:0;display:flex;overflow:hidden;font:900 clamp(5rem,23vw,26rem)/.86 var(--d);padding:.02em .04em 0;letter-spacing:-.01em}
-.l{display:inline-block;font-variation-settings:'wdth' 100;animation:up .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*70ms)}
+.l{display:inline-block;font-variation-settings:'wdth' 100;transition:font-variation-settings .09s ease,transform .12s ease;animation:up .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*70ms)}
 .l.x{color:var(--ac)}
 @keyframes up{from{transform:translateY(105%)}}
 .intro{font:italic 400 clamp(1.3rem,2.6vw,2.2rem)/1.15 var(--s);margin:1.2rem 0 0;max-width:30ch;text-align:center;animation:fd 1s .5s both}
@@ -263,6 +263,11 @@ const to=direction>0?'inset(0 100% 0 0)':'inset(0 0 0 100%)';
 const o={duration:420,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'};
 return sh.animate([{clipPath:from},{clipPath:'inset(0)'}],o).finished.then(()=>{fn();return sh.animate([{clipPath:'inset(0)'},{clipPath:to}],o).finished})};
 document.querySelectorAll('[data-go],.mark').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));go(()=>window.scrollTo({top:t.offsetTop,behavior:'instant'}))}));
+/* Work is a real Next.js route; cover the homepage before leaving its prototype frame. */
+document.querySelector('.links a[href="/work"]')?.addEventListener('click',e=>{
+  e.preventDefault();
+  go(()=>window.top.location.assign('/work'));
+});
 
 /* project overlay */
 const ov=$('#ov');let cur=0,last=null;
@@ -290,6 +295,27 @@ const tick=()=>$('#ck').textContent=f.format(new Date()),_=setInterval(tick,2000
 const hero=$('#hero'),L=[...document.querySelectorAll('.l')],cu=$('#cu'),lab=cu.querySelector('b');
 let mx=-1,my=-1,sx=-600,sy=-600,cx=-100,cy=-100,tx=-100,ty=-100,px=0,py=0,qx=0,qy=0,hov=-1;
 const W=L.map(()=>100);
+/* Keep the original responsive ZENIX letter-wiggle, driven directly by the pointer over the wordmark. */
+if(!RM&&matchMedia('(hover:hover)').matches){
+  const wordmark=$('#wm');
+  wordmark.addEventListener('pointermove',e=>{
+    if(e.pointerType!=='mouse')return;
+    L.forEach((letter,i)=>{
+      const rect=letter.getBoundingClientRect();
+      const distance=Math.abs(e.clientX-(rect.left+rect.width/2));
+      const influence=Math.exp(-Math.pow(distance/Math.max(42,rect.width*1.5),2)/2);
+      const width=66+86*influence;
+      letter.style.fontVariationSettings=`'wdth' ${width.toFixed(1)}`;
+      letter.style.transform=`scaleY(${(1+influence*.055).toFixed(3)})`;
+    });
+  });
+  wordmark.addEventListener('pointerleave',()=>{
+    L.forEach(letter=>{
+      letter.style.fontVariationSettings="'wdth' 100";
+      letter.style.transform='';
+    });
+  });
+}
 if(FINE&&!RM){rootEl.classList.add('cur');
 addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;mx=e.clientX;my=e.clientY;tx=mx;ty=my;
 const d=e.target.closest('[data-cursor]');cu.classList.toggle('big',!!d);if(d)lab.textContent=d.dataset.cursor;
@@ -315,7 +341,7 @@ pr.src='/images/nayel-face.svg'}
 const frame=()=>{const sc=scrollY,p=Math.min(1,sc/innerHeight);
 if(sc<innerHeight){hero.firstElementChild.nextElementSibling.style.cssText=`transform:translateY(${p*14}vh);opacity:${1-p*1.1}`;
 if(FINE&&!RM){sx+=(mx-sx)*.12;sy+=(my-sy)*.12;hero.style.setProperty('--mx',sx+'px');hero.style.setProperty('--my',sy+'px');
-L.forEach((l,i)=>{const r=l.getBoundingClientRect(),dx=mx<0?0:Math.abs(mx-(r.left+r.width/2))/innerWidth,t=mx<0?.2:Math.exp(-Math.pow(dx/.2,2)/2),w=mx<0?100:66+86*t;W[i]+=(w-W[i])*.1;l.style.fontVariationSettings=`'wdth' ${W[i].toFixed(1)}`})}}
+}}
 if(FINE&&!RM){cx+=(tx-cx)*.25;cy+=(ty-cy)*.25;cu.style.transform=`translate(${cx}px,${cy}px)`;
 const w=pv.offsetWidth,gx=mx+32+w>innerWidth-16?mx-w-32:mx+32,gy=Math.max(70,Math.min(innerHeight-pv.offsetHeight-16,my-pv.offsetHeight/2));
 px+=(gx-px)*.14;py+=(gy-py)*.14;
