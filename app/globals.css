@@ -109,8 +109,9 @@ body { overflow-x: hidden; overflow-y: auto; }
 
 
 /* Animated Paper grain gradient — Work archive chooser only */
-.work-choice-page{position:relative;isolation:isolate;overflow:hidden;background:#0B0D0E}
-.work-choice-background{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;opacity:.62}
+.work-choice-page{position:relative;isolation:isolate;overflow:hidden;background:transparent}
+.work-choice-background{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;opacity:.78}
+.work-choice-page>*:not(.work-choice-background){position:relative;z-index:1}
 .work-choice-background canvas{display:block;width:100%!important;height:100%!important}
 .work-choice-top,.work-choice-main,.work-choice-bottom{position:relative;z-index:1}
 .work-choice-card{background:rgba(11,13,14,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
