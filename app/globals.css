@@ -1,5 +1,5 @@
 * { box-sizing: border-box; }
-html, body { width: 100%; min-height: 100%; margin: 0; padding: 0; background: #0B0D0E; }
+html, body { width: 100%; min-height: 100%; margin: 0; padding: 0; background: transparent; }
 body { overflow-x: hidden; overflow-y: auto; }
 .prototype-shell { position: relative; z-index: 1; width: 100%; height: 100svh; min-height: 100vh; overflow: hidden; background: transparent; }
 .prototype-frame { display: block; width: 100%; height: 100%; border: 0; background: transparent; }
@@ -120,7 +120,6 @@ body { overflow-x: hidden; overflow-y: auto; }
 
 
 /* Shared animated ZENIX background across every Next.js page */
-html{background:#0B0D0E}
 body{background:transparent;isolation:isolate}
 .site-grain-background{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:0;overflow:hidden;pointer-events:none}
 .site-grain-background>div,.site-grain-background canvas{display:block;position:absolute!important;inset:0;width:100%!important;height:100%!important;max-width:none!important}
