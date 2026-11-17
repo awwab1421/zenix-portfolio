@@ -1,5 +1,12 @@
-import { redirect } from 'next/navigation';
-
 export default function HomePage() {
-  redirect('/zenix-prototype.html');
+  return (
+    <main className="prototype-shell">
+      <iframe
+        className="prototype-frame"
+        src="/zenix-prototype-content.html"
+        title="ZENIX portfolio homepage"
+        allow="autoplay"
+      />
+    </main>
+  );
 }
