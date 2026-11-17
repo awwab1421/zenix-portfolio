@@ -8,9 +8,7 @@ type Phase = 'idle' | 'cover' | 'reveal';
 export default function RouteTransition() {
   const router = useRouter();
   const pathname = usePathname();
-  const [phase, setPhase] = useState<Phase>(() =>
-    pathname === '/zenix-prototype.html' ? 'idle' : 'reveal'
-  );
+  const [phase, setPhase] = useState<Phase>('idle');
   const previousPath = useRef(pathname);
   const navigationTimer = useRef<number | null>(null);
 
