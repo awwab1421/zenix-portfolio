@@ -117,3 +117,12 @@ body { overflow-x: hidden; overflow-y: auto; }
 .work-choice-card{background:rgba(11,13,14,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .work-choice-card:hover{backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
 
+
+
+/* Shared animated ZENIX background across every Next.js page */
+html{background:#0B0D0E}
+body{background:transparent;isolation:isolate}
+.site-grain-background{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:-1;overflow:hidden;pointer-events:none}
+.site-grain-background>div,.site-grain-background canvas{display:block;position:absolute!important;inset:0;width:100%!important;height:100%!important;max-width:none!important}
+.work-choice-page,.collection-page,.project-detail-page{background:transparent}
+.work-choice-page,.collection-page,.project-detail-page{position:relative;z-index:1}
