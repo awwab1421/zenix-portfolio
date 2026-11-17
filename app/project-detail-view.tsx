@@ -1,18 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
 import type { Project } from './projects';
 
 type Props = { project: Project; previous: Project; next: Project; index: number; total: number };
 
 export default function ProjectDetail({ project, previous, next, index, total }: Props) {
-  const [transition, setTransition] = useState<'next' | 'previous' | null>(null);
-  function navigate(target: Project, direction: 'next' | 'previous') {
-    if (transition) return;
-    setTransition(direction);
-    window.setTimeout(() => window.location.assign(`/${target.collection}/${target.slug}`), 390);
-  }
   return (
     <main className="project-detail-page">
       <header className="project-detail-top">
@@ -36,12 +29,11 @@ export default function ProjectDetail({ project, previous, next, index, total }:
       </section>
       <section className="project-detail-gallery"><div className="project-gallery-placeholder">ADDITIONAL IMAGE / DETAIL 01</div><div className="project-gallery-placeholder alt">ADDITIONAL IMAGE / DETAIL 02</div></section>
       <nav className="project-detail-nav" aria-label="Project navigation">
-        <button type="button" onClick={() => navigate(previous, 'previous')} disabled={!!transition}>← PREVIOUS PROJECT<span>{previous.title}</span></button>
+        <Link className="project-detail-nav-link previous" href={`/${previous.collection}/${previous.slug}`}>← PREVIOUS PROJECT<span>{previous.title}</span></Link>
         <Link href={`/${project.collection}`}>ALL {project.collection.toUpperCase()} WORK ↗</Link>
-        <button type="button" onClick={() => navigate(next, 'next')} disabled={!!transition}>NEXT PROJECT →<span>{next.title}</span></button>
+        <Link className="project-detail-nav-link next" href={`/${next.collection}/${next.slug}`}>NEXT PROJECT →<span>{next.title}</span></Link>
       </nav>
       <footer className="project-detail-footer"><span>ZENIX — A CREATIVE ALIAS BY NAYEL</span><Link href="/work">CHOOSE AN ARCHIVE ↗</Link></footer>
-      {transition && <div className={`project-transition ${transition}`} aria-hidden="true" />}
     </main>
   );
 }
