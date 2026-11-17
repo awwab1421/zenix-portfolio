@@ -81,7 +81,7 @@ section{padding:clamp(70px,14vh,160px) clamp(16px,3vw,40px)}
 .col a{display:block}
 .pic{overflow:hidden;clip-path:inset(100% 0 0 0);transition:clip-path 1s cubic-bezier(.2,.8,.2,1)}
 .v .pic,.pic.v{clip-path:inset(0)}
-.pic svg{transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.pic svg{display:block;width:100%;height:auto;aspect-ratio:4/5;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
 .col a:hover svg{transform:scale(1.035)}
 figcaption{display:flex;justify-content:space-between;gap:1rem;padding-top:.8rem;font:400 .78rem var(--m);color:var(--mu);transition:color .2s}
 figcaption b{font:italic 400 1.35rem/1 var(--s);color:var(--tx)}
@@ -233,7 +233,7 @@ const P=[
 let K=0;
 const art=(p,i)=>{const k=++K,[gx,gy,gr]=p.g;
 const T=p.L.map((s,j)=>{const y=p.fs*.85+14+j*p.fs*(p.s?.8:.88);return p.s?`<text x="20" y="${y}" font-family="Instrument Serif" font-style="italic" font-size="${p.fs}" fill="${p.fg}">${s}</text>`:`<text x="16" y="${y}" textLength="368" lengthAdjust="spacingAndGlyphs" font-family="Anybody" font-weight="900" font-size="${p.fs}" fill="${p.fg}">${s}</text>`}).join('');
-return `<svg viewBox="0 0 400 500" role="img" aria-label="Placeholder artwork: ${p.n}"><defs><radialGradient id="g${k}"><stop offset="0" stop-color="${p.ac}" stop-opacity=".85"/><stop offset="1" stop-color="${p.ac}" stop-opacity="0"/></radialGradient><pattern id="h${k}" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.3" fill="${p.fg}"/></pattern></defs><rect width="400" height="500" fill="${p.bg}"/><circle cx="${gx}" cy="${gy}" r="${gr}" fill="url(#g${k})"/><rect width="400" height="500" fill="url(#h${k})" opacity=".16"/><path d="M0 ${380-i*20}L400 ${300+i*25}" stroke="${p.ac}" stroke-width="1.5"/>${T}<text x="16" y="486" font-family="Space Mono" font-size="10" fill="${p.fg}" opacity=".8">Placeholder N°0${i+1}</text></svg>`};
+return `<svg width="400" height="500" viewBox="0 0 400 500" role="img" aria-label="Placeholder artwork: ${p.n}"><defs><radialGradient id="g${k}"><stop offset="0" stop-color="${p.ac}" stop-opacity=".85"/><stop offset="1" stop-color="${p.ac}" stop-opacity="0"/></radialGradient><pattern id="h${k}" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1.3" fill="${p.fg}"/></pattern></defs><rect width="400" height="500" fill="${p.bg}"/><circle cx="${gx}" cy="${gy}" r="${gr}" fill="url(#g${k})"/><rect width="400" height="500" fill="url(#h${k})" opacity=".16"/><path d="M0 ${380-i*20}L400 ${300+i*25}" stroke="${p.ac}" stroke-width="1.5"/>${T}<text x="16" y="486" font-family="Space Mono" font-size="10" fill="${p.fg}" opacity=".8">Placeholder N°0${i+1}</text></svg>`};
 const $=s=>document.querySelector(s),RM=matchMedia('(prefers-reduced-motion:reduce)').matches,FINE=matchMedia('(hover:hover) and (pointer:fine)').matches;
 const rootEl=document.documentElement;
 
@@ -249,8 +249,7 @@ $('#col').innerHTML=P.map((p,i)=>`<figure><a href="#" data-i="${i}" data-cursor=
 const pv=$('#pv');pv.innerHTML=P.map((p,i)=>`<div style="display:none">${art(p,i)}</div>`).join('');
 
 /* reveals */
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');io.unobserve(e.target)}}),{threshold:.15});
-document.querySelectorAll('.sh,.pic').forEach(e=>io.observe(e));
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');io.unobserve(e.target)}}),{threshold:0,rootMargin:'0px 0px 100px 0px'});document.querySelectorAll('.sh,.pic').forEach(e=>io.observe(e))}else{document.querySelectorAll('.sh,.pic').forEach(e=>e.classList.add('v'))}
 
 /* shutter transition */
 const sh=$('#sh');
