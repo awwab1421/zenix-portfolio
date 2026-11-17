@@ -100,3 +100,15 @@ body { overflow-x: hidden; overflow-y: auto; }
 @keyframes project-shutter-previous{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0)}}
 @media(max-width:650px){.project-detail-top{font-size:10px}.project-detail-heading h1{font-size:clamp(4rem,19vw,8rem)}.project-detail-info{grid-template-columns:1fr;gap:28px}.project-detail-gallery{grid-template-columns:1fr}.project-detail-nav{grid-template-columns:1fr 1fr}.project-detail-nav>a{grid-column:1/-1;grid-row:1;text-align:left}.project-detail-footer{flex-direction:column}.project-art-top,.project-art-bottom{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.project-transition{animation:none!important;display:none}}
+
+/* Shared lime shutter for navigation between pages */
+.route-transition-curtain{position:fixed;inset:0;z-index:200;background:#D5FF00;pointer-events:none;clip-path:inset(100% 0 0 0)}
+.route-transition-curtain.cover{animation:route-curtain-cover .42s cubic-bezier(.7,0,.2,1) forwards}
+.route-transition-curtain.reveal{animation:route-curtain-reveal .42s cubic-bezier(.7,0,.2,1) forwards}
+@keyframes route-curtain-cover{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
+@keyframes route-curtain-reveal{from{clip-path:inset(0)}to{clip-path:inset(0 0 100% 0)}}
+.archive-placeholder .placeholder-art{transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .35s}
+.archive-placeholder .placeholder-art strong{transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.archive-placeholder:hover .placeholder-art{transform:scale(.985);filter:brightness(1.12)}
+.archive-placeholder:hover .placeholder-art strong{transform:translateY(-7px)}
+@media(prefers-reduced-motion:reduce){.route-transition-curtain{animation:none!important;display:none!important}.archive-placeholder .placeholder-art,.archive-placeholder .placeholder-art strong{transition:none!important}}
