@@ -1,10 +1,12 @@
 import Link from 'next/link';
+import WorkChoiceBackground from './work-choice-background';
 
 export const metadata = { title: 'Work — ZENIX', description: 'Choose between personal and professional work by ZENIX.' };
 
 export default function WorkPage() {
   return (
     <main className="work-choice-page">
+      <WorkChoiceBackground />
       <header className="work-choice-top">
         <Link href="/" aria-label="ZENIX home">ZENIX ↗</Link>
         <span>WORK / 02 ARCHIVES</span>
