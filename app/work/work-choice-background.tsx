@@ -1,27 +1,25 @@
 'use client';
 
-import { GrainGradient } from '@paper-design/shaders-react';
+import dynamic from 'next/dynamic';
+
+const GrainGradient = dynamic(
+  () => import('@paper-design/shaders-react').then((mod) => mod.GrainGradient),
+  { ssr: false }
+);
 
 export default function WorkChoiceBackground() {
   return (
     <div className="work-choice-background" aria-hidden="true">
       <GrainGradient
-        width="100%"
-        height="100%"
-        colors={['#D5FF00', '#85898B', '#F2F0E9', '#191C1D']}
-        colorBack="#0B0D0E"
-        softness={0.62}
-        intensity={0.38}
-        noise={0.2}
+        width={1280}
+        height={720}
+        colors={["#d4ff0091", "#d4ff0047", "#d4ff007a", "#d4ff00"]}
+        colorBack="#000000"
+        softness={0.5}
+        intensity={0.5}
+        noise={0.25}
         shape="corners"
-        speed={0.22}
-        scale={1}
-        rotation={0}
-        offsetX={0}
-        offsetY={0}
-        fit="cover"
-        minPixelRatio={1}
-        maxPixelCount={1200000}
+        speed={1}
       />
     </div>
   );
