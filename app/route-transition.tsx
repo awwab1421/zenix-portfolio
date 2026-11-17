@@ -36,6 +36,10 @@ export default function RouteTransition() {
       if (destination.origin !== window.location.origin || destination.pathname === window.location.pathname) return;
 
       event.preventDefault();
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        router.push(destination.pathname + destination.search + destination.hash);
+        return;
+      }
       if (navigationTimer.current !== null) window.clearTimeout(navigationTimer.current);
       setPhase('cover');
       navigationTimer.current = window.setTimeout(() => {
@@ -43,9 +47,9 @@ export default function RouteTransition() {
       }, 420);
     };
 
-    document.addEventListener('click', handleClick);
+    document.addEventListener('click', handleClick, true);
     return () => {
-      document.removeEventListener('click', handleClick);
+      document.removeEventListener('click', handleClick, true);
       if (navigationTimer.current !== null) window.clearTimeout(navigationTimer.current);
     };
   }, [router]);
