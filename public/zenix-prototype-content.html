@@ -118,6 +118,7 @@ footer{padding:40px clamp(16px,3vw,40px) 60px;font:400 .78rem/1.6 var(--m);color
 .sl{aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:space-between;padding:14px;border:1px dashed #D5FF0066;background:repeating-linear-gradient(135deg,#191C1D 0 12px,#141718 12px 24px);font:400 .72rem/1.4 var(--m);color:var(--mu)}
 .sl.w{aspect-ratio:5/4}.sl.c{aspect-ratio:3/4}
 .sl svg{width:22px;color:var(--ac)}
+.about-photo{display:block;width:100%;height:100%;min-height:100%;object-fit:cover;aspect-ratio:4/5}.about-photo.landscape{aspect-ratio:5/4}.about-photo.editorial{aspect-ratio:3/4}
 /* contact */
 #contact h2{margin:0;font:900 clamp(3rem,11.5vw,13rem)/.88 var(--d)}
 #contact h2 span{display:block}
@@ -205,13 +206,13 @@ html, body, main, main > section, footer {
   <div class="col" id="col"></div>
 </section>
 <section id="about">
-  <div class="sh"><span>About</span><i class="ln"></i><span>Placeholders until supplied</span></div>
+  <div class="sh"><span>About</span><i class="ln"></i><span>A little about me</span></div>
   <div class="ab">
     <div class="b1"><span class="tag">Intro placeholder</span><p>A short, confident introduction goes here: who you are and what you make.</p></div>
-    <figure class="f1 tp"><div class="pic"><div class="sl"><span>Photo 01, portrait 4:5</span><span>Your photograph goes here.</span></div></div></figure>
+    <figure class="f1 tp"><div class="pic"><img class="about-photo" src="/images/nayel-portrait-1.jpg" alt="Awwab Nayel portrait" loading="lazy"></div></figure>
     <div class="b2"><span class="tag">Design philosophy placeholder</span><h3>How I think about design</h3><p>Two or three sentences on your approach to type, contrast and composition will go here.</p></div>
-    <figure class="f2 tp"><div class="pic"><div class="sl w"><span>Photo 02, landscape 5:4</span><span>Workspace, process or candid shot.</span></div></div></figure>
-    <figure class="f3 tp"><div class="pic"><div class="sl c"><span>Photo 03, cut-out</span><span>Transparent PNG sticker of you.</span></div></div></figure>
+    <figure class="f2 tp"><div class="pic"><img class="about-photo landscape" src="/images/nayel-portrait-2.jpg" alt="A candid photograph of Awwab" loading="lazy"></div></figure>
+    <figure class="f3 tp"><div class="pic"><img class="about-photo editorial" src="/images/nayel-candid.jpg" alt="An editorial photograph of Awwab" loading="lazy"></div></figure>
     <div class="b3"><span class="tag">Skills draft, taken from your brief. Edit freely.</span><h3>Skills</h3><ul><li>Experimental typography</li><li>Poster and cover design</li><li>Dark editorial layout</li><li>Conceptual and surreal imagery</li></ul><h3>Software</h3><ul><li class="mu">Software 01, placeholder</li><li class="mu">Software 02, placeholder</li><li class="mu">Software 03, placeholder</li></ul></div>
     <div class="b4"><span class="tag">Personal details</span><dl><dt>Name</dt><dd class="mu">Placeholder</dd><dt>Based in</dt><dd>Dhaka, Bangladesh</dd><dt>Instagram</dt><dd><a href="https://www.instagram.com/zenix.xfx/" target="_blank" rel="noopener">@zenix.xfx</a></dd><dt>Status</dt><dd class="mu">Placeholder</dd><dt>Languages</dt><dd class="mu">Placeholder</dd><dt>Education</dt><dd class="mu">Placeholder, CV comes later</dd></dl></div>
   </div>
