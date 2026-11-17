@@ -13,7 +13,7 @@ Object.assign(host.style, {
   overflow: 'hidden',
   pointerEvents: 'none',
 });
-document.body.prepend(host);
+document.documentElement.prepend(host);
 
 const root = createRoot(host);
 root.render(
