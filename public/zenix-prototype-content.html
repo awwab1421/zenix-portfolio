@@ -12,6 +12,7 @@
 *,*::before,*::after{box-sizing:inherit}
 html{background:transparent;scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:transparent;color:var(--tx);font:400 1.05rem/1.5 var(--d);font-variation-settings:'wdth' 100;overflow-x:hidden}
+main{position:relative;z-index:1}
 a{color:inherit;text-decoration:none}
 svg{display:block;width:100%;height:auto}
 :focus-visible{outline:2px solid var(--ac);outline-offset:3px}
@@ -372,7 +373,7 @@ Object.assign(host.style, {
   width: '100vw',
   height: '100vh',
   height: '100dvh',
-  zIndex: '-1',
+  zIndex: '0',
   overflow: 'hidden',
   pointerEvents: 'none'
 });
