@@ -21,8 +21,9 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 /* nav */
 .nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:flex-start;padding:18px clamp(16px,3vw,40px);pointer-events:none}
 .nav>*{pointer-events:auto}
-.mark{display:block;width:64px;height:64px;color:var(--ac)}
+.mark{display:block;width:128px;height:128px;color:var(--ac)}
 .mark img{display:block;width:100%;height:100%;object-fit:contain}
+@media (max-width:760px){.mark{width:88px;height:88px}}
 .links{display:flex;gap:clamp(14px,2.4vw,34px);align-items:flex-start;font-weight:500}
 .links a,.links span{display:block;transition:transform .35s,color .2s}
 .links :nth-child(1){transform:rotate(-5deg)}.links :nth-child(2){transform:rotate(3deg) translateY(8px)}.links :nth-child(3){transform:rotate(-2deg) translateY(2px)}.links :nth-child(4){transform:rotate(4deg) translateY(10px)}
@@ -174,7 +175,7 @@ html, body, main, main > section, footer {
 <body>
 <a href="#work" style="position:absolute;left:-999px" onfocus="this.style.left='8px'">Skip to work</a>
 <div class="nav">
-  <a href="#hero" class="mark" aria-label="ZENIX home"><img src="/images/zenix-logo.svg" alt="ZENIX" width="64" height="64"></a>
+  <a href="#hero" class="mark" aria-label="ZENIX home"><img src="/images/zenix-logo.svg" alt="ZENIX" width="128" height="128"></a>
   <div>
     <nav class="links" aria-label="Main"><a href="/work">Work</a><a href="#collage" data-go>Collage</a><a href="#about" data-go>About</a><a href="#contact" data-go>Contact</a></nav>
     <div class="clock"><i></i>Dhaka <span id="ck">--:--</span></div>
