@@ -2,6 +2,8 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { GrainGradient } from 'https://esm.sh/@paper-design/shaders-react@0.0.77?external=react';
 
+// Keep the shader in the page's normal stacking order. A negative z-index
+// puts it behind the root canvas in some browsers, making it invisible.
 const host = document.createElement('div');
 host.id = 'zenix-grain-background';
 Object.assign(host.style, {
@@ -9,11 +11,19 @@ Object.assign(host.style, {
   inset: '0',
   width: '100vw',
   height: '100vh',
-  zIndex: '-1',
+  zIndex: '0',
   overflow: 'hidden',
   pointerEvents: 'none',
 });
-document.documentElement.prepend(host);
+
+// The homepage content sits above the shader; existing fixed UI keeps
+// its own higher z-index (navigation, preview, overlay, shutter, cursor).
+const main = document.querySelector('main');
+if (main) {
+  main.style.position = 'relative';
+  main.style.zIndex = '1';
+}
+document.body.append(host);
 
 const root = createRoot(host);
 root.render(
