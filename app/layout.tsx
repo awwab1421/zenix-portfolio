@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import RouteTransition from './route-transition';
 import SiteGrainBackground from './site-grain-background';
+import SiteCursor from './site-cursor';
 
 export const metadata: Metadata = {
   title: 'ZENIX — A creative alias by Nayel',
@@ -19,7 +20,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body><SiteGrainBackground />{children}<RouteTransition /></body>
+      <body><SiteGrainBackground />{children}<RouteTransition /><SiteCursor /></body>
     </html>
   );
 }
