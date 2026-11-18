@@ -125,3 +125,18 @@ body{background:transparent;isolation:isolate}
 .site-grain-background>div,.site-grain-background canvas{display:block;position:absolute!important;inset:0;width:100%!important;height:100%!important;max-width:none!important}
 .work-choice-page,.collection-page,.project-detail-page{background:transparent}
 .work-choice-page,.collection-page,.project-detail-page{position:relative;z-index:1}
+
+
+/* Site-wide animated lime flame cursor (desktop pointers only) */
+.site-cursor-enabled,.site-cursor-enabled *{cursor:none!important}
+.site-cursor{position:fixed;left:0;top:0;z-index:260;width:40px;height:48px;margin:-5px 0 0 -7px;pointer-events:none;opacity:0;will-change:transform;filter:drop-shadow(0 0 7px #D5FF0080);transition:opacity .14s ease}
+.site-cursor.is-visible{opacity:1}
+.site-cursor-flame{display:block;width:40px;height:48px;overflow:visible;transform-origin:50% 90%;animation:zenix-flame-flicker .48s ease-in-out infinite alternate}
+.site-cursor .flame-outer{transform-origin:50% 90%;animation:zenix-flame-shape .62s ease-in-out infinite alternate}
+.site-cursor .flame-inner{transform-origin:50% 90%;animation:zenix-flame-core .38s ease-in-out infinite alternate}
+.site-cursor-label{position:absolute;left:30px;top:7px;padding:4px 7px;background:#0B0D0E;border:1px solid #D5FF00;color:#D5FF00;font:10px/1.2 'Space Mono',monospace;letter-spacing:.04em;white-space:nowrap;opacity:0;transform:translateX(-4px);transition:opacity .16s,transform .16s}
+.site-cursor.has-label .site-cursor-label{opacity:1;transform:translateX(0)}
+@keyframes zenix-flame-flicker{from{transform:rotate(-4deg) scale(.96,1.02)}to{transform:rotate(4deg) scale(1.04,.96)}}
+@keyframes zenix-flame-shape{from{transform:skewX(-3deg) scaleY(.96)}to{transform:skewX(3deg) scaleY(1.05)}}
+@keyframes zenix-flame-core{from{transform:translateY(1px) scale(.94)}to{transform:translateY(-1px) scale(1.04)}}
+@media(prefers-reduced-motion:reduce){.site-cursor-flame,.site-cursor .flame-outer,.site-cursor .flame-inner{animation:none!important}.site-cursor,.site-cursor-label{transition:none!important}}
