@@ -61,41 +61,69 @@ h1{margin:0;display:flex;overflow:hidden;font:900 clamp(5rem,23vw,26rem)/.86 var
 .ok .stk{display:block}
 .on .stk{opacity:1;visibility:visible;transform:translateX(-50%) scale(1) rotate(6deg);transition:opacity .12s,transform .5s cubic-bezier(.34,1.7,.5,1),visibility 0s}
 @media (max-width:760px){.stk{width:84px}}
-/* Floating portrait frame — ZENIX landing reveal */
-#hero{perspective:1200px}
+/* Floating portrait frame — slow reveal + magnetic 3D edge */
+#hero{perspective:1400px}
+#hero .in{transform:translateX(-8vw)}
 .hero-portrait-float{
-  position:absolute;right:clamp(28px,7.2vw,112px);bottom:clamp(92px,13vh,142px);
-  width:clamp(150px,19vw,258px);z-index:4;perspective:1000px;
-  opacity:0;transform:translate3d(0,110%,0) rotate(-5deg);
-  animation:portrait-rise 1.15s cubic-bezier(.18,.82,.22,1) .45s forwards,portrait-hover 7s ease-in-out 1.6s infinite;
+  position:absolute;right:clamp(110px,16.5vw,320px);bottom:clamp(150px,19vh,220px);
+  width:clamp(300px,22vw,420px);z-index:4;perspective:1200px;
+  opacity:0;transform:translate3d(0,125%,0) rotate(-4deg);
+  animation:portrait-rise 2.65s cubic-bezier(.16,.72,.18,1) .55s forwards,portrait-hover 8s ease-in-out 3.25s infinite;
   will-change:transform;
 }
 .hero-portrait-frame{
-  position:relative;padding:9px;border:2px solid #08764f;border-radius:clamp(28px,5vw,54px);
-  background:rgba(0,35,23,.72);box-shadow:0 0 0 1px #D5FF0020,0 0 26px #00b87938,0 0 70px #00b87922;
+  --pointer-x:50%;--pointer-y:50%;
+  position:relative;padding:11px;border:3px solid #08764f;border-radius:clamp(34px,4.3vw,58px);
+  background:rgba(0,35,23,.82);
+  box-shadow:0 0 0 1px #D5FF0020,0 0 30px #00b87942,0 0 82px #00b87925;
   transform:translate3d(var(--frame-x,0px),var(--frame-y,0px),0) rotateX(var(--frame-rx,0deg)) rotateY(var(--frame-ry,0deg));
-  transform-style:preserve-3d;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s;
+  transform-style:preserve-3d;transition:transform .12s ease-out,box-shadow .18s,border-color .18s;
+  isolation:isolate;
 }
 .hero-portrait-frame::before{
-  content:"";position:absolute;inset:-1px;border:1px solid #D5FF0028;border-radius:inherit;pointer-events:none;
-  transform:translateZ(12px);
+  content:"";position:absolute;inset:-3px;border-radius:inherit;pointer-events:none;z-index:2;
+  border:2px solid transparent;
+  background:radial-gradient(100px circle at var(--pointer-x) var(--pointer-y),#D5FF00 0%,#00e58a 28%,transparent 72%) border-box;
+  -webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:var(--edge-glow,0);transition:opacity .2s;
+}
+.hero-portrait-frame::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:1;
+  background:radial-gradient(160px circle at var(--pointer-x) var(--pointer-y),#D5FF001f,transparent 75%);
 }
 .hero-portrait-frame img{
-  display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:clamp(20px,4.2vw,45px);
-  transform:translateZ(3px);
+  display:block;position:relative;z-index:0;width:100%;aspect-ratio:4/5;object-fit:cover;
+  border-radius:clamp(25px,3.6vw,46px);transform:translateZ(4px);
 }
-.hero-portrait-float:hover .hero-portrait-frame{border-color:#0b9c68;box-shadow:0 0 0 1px #D5FF0040,0 0 34px #00d58a55,0 0 90px #00b87930}
+.hero-portrait-float:hover .hero-portrait-frame{border-color:#0b9c68;box-shadow:0 0 0 1px #D5FF0040,0 0 38px #00d58a60,0 0 100px #00b87938}
+.hero-portrait-float:hover .hero-portrait-frame::before{opacity:1}
 .hero-portrait-orbit{position:absolute;border:1px solid #00a86b66;border-radius:50%;pointer-events:none}
 .hero-portrait-orbit.one{width:9px;height:9px;left:-13px;top:18%}
 .hero-portrait-orbit.two{width:6px;height:6px;right:9%;bottom:-16px;background:#D5FF0080}
-@keyframes portrait-rise{0%{opacity:0;transform:translate3d(0,110%,0) rotate(-5deg)}75%{opacity:1;transform:translate3d(0,-8px,0) rotate(1.5deg)}100%{opacity:1;transform:translate3d(0,0,0) rotate(0)}}
-@keyframes portrait-hover{0%,100%{translate:0 0;rotate:0deg}25%{translate:-5px -5px;rotate:-1.2deg}50%{translate:0 -9px;rotate:0deg}75%{translate:5px -4px;rotate:1.2deg}}
+@keyframes portrait-rise{
+  0%{opacity:0;transform:translate3d(0,125%,0) rotate(-4deg)}
+  65%{opacity:1;transform:translate3d(0,5%,0) rotate(1.2deg)}
+  82%{transform:translate3d(0,-2%,0) rotate(-.5deg)}
+  100%{opacity:1;transform:translate3d(0,0,0) rotate(0)}
+}
+@keyframes portrait-hover{
+  0%,100%{translate:0 0;rotate:0deg}
+  25%{translate:-7px -5px;rotate:-1deg}
+  50%{translate:0 -11px;rotate:0deg}
+  75%{translate:7px -5px;rotate:1deg}
+}
+@media(max-width:1100px){
+ .hero-portrait-float{right:clamp(30px,7vw,90px);width:clamp(260px,28vw,340px)}
+ #hero .in{transform:translateX(-7vw)}
+}
 @media(max-width:760px){
- .hero-portrait-float{right:18px;bottom:clamp(74px,11vh,100px);width:clamp(112px,31vw,158px)}
- .hero-portrait-frame{padding:6px;border-radius:28px}
+ #hero .in{transform:translateY(-10vh)}
+ .hero-portrait-float{right:18px;bottom:clamp(74px,10vh,100px);width:clamp(126px,34vw,178px)}
+ .hero-portrait-frame{padding:7px;border-width:2px;border-radius:28px}
  .hero-portrait-frame img{border-radius:22px}
 }
-@media(hover:none){.hero-portrait-frame{transform:none!important}}
+@media(hover:none){.hero-portrait-frame{transform:none!important}.hero-portrait-frame::before{display:none}}
 @media(prefers-reduced-motion:reduce){.hero-portrait-float{opacity:1;transform:none;animation:none!important}.hero-portrait-frame{transition:none!important}}
 
 /* section heads */
@@ -372,21 +400,28 @@ document.addEventListener('mouseleave',()=>{tx=-100;ty=-100});
 $('#idx').addEventListener('focusin',e=>{const a=e.target.closest('[data-i]');if(a){const h=+a.dataset.i;[...pv.children].forEach((c,j)=>c.style.display=j===h?'block':'none');pv.classList.add('on');px=innerWidth*.6;py=innerHeight*.2;pv.style.transform=`translate(${px}px,${py}px)`}});
 $('#idx').addEventListener('focusout',()=>pv.classList.remove('on'));
 }
-/* Magnetic 3D response for the landing portrait frame */
+/* Cursor-reactive magnetic frame edge and 3D tilt */
 {
-  const portrait = document.querySelector('#hero-portrait-frame');
-  const frame = portrait?.querySelector('.hero-portrait-frame');
-  if (portrait && frame && matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
-    portrait.addEventListener('pointermove', event => {
-      const rect = portrait.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width - .5;
-      const y = (event.clientY - rect.top) / rect.height - .5;
-      frame.style.setProperty('--frame-x', (x * 10).toFixed(1) + 'px');
-      frame.style.setProperty('--frame-y', (y * 10).toFixed(1) + 'px');
-      frame.style.setProperty('--frame-ry', (x * 9).toFixed(1) + 'deg');
-      frame.style.setProperty('--frame-rx', (-y * 8).toFixed(1) + 'deg');
-    }, {passive:true});
-    portrait.addEventListener('pointerleave', () => {
+  const portrait=document.querySelector('#hero-portrait-frame');
+  const frame=portrait?.querySelector('.hero-portrait-frame');
+  if(portrait&&frame&&FINE&&!RM){
+    portrait.addEventListener('pointermove',event=>{
+      const rect=frame.getBoundingClientRect();
+      const x=(event.clientX-rect.left)/rect.width;
+      const y=(event.clientY-rect.top)/rect.height;
+      const dx=x-.5,dy=y-.5;
+      frame.style.setProperty('--pointer-x',(x*100).toFixed(1)+'%');
+      frame.style.setProperty('--pointer-y',(y*100).toFixed(1)+'%');
+      frame.style.setProperty('--edge-glow','1');
+      frame.style.setProperty('--frame-x',(dx*16).toFixed(1)+'px');
+      frame.style.setProperty('--frame-y',(dy*16).toFixed(1)+'px');
+      frame.style.setProperty('--frame-ry',(dx*15).toFixed(1)+'deg');
+      frame.style.setProperty('--frame-rx',(-dy*13).toFixed(1)+'deg');
+    },{passive:true});
+    portrait.addEventListener('pointerleave',()=>{
+      frame.style.setProperty('--pointer-x','50%');
+      frame.style.setProperty('--pointer-y','50%');
+      frame.style.setProperty('--edge-glow','0');
       frame.style.setProperty('--frame-x','0px');
       frame.style.setProperty('--frame-y','0px');
       frame.style.setProperty('--frame-rx','0deg');
