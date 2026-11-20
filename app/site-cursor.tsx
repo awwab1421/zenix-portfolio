@@ -9,7 +9,6 @@ export default function SiteCursor() {
   useEffect(() => {
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     if (!finePointer) return;
-
     const cursor = cursorRef.current;
     const label = labelRef.current;
     if (!cursor || !label) return;
@@ -25,11 +24,9 @@ export default function SiteCursor() {
         cursor.classList.add('is-visible');
         visible = true;
       }
-
       const target = event.target instanceof Element ? event.target : null;
       const interactive = target?.closest('[data-cursor], a, button, [role="button"]');
-      const customLabel = interactive?.getAttribute('data-cursor');
-      label.textContent = customLabel || (interactive ? 'OPEN' : '');
+      label.textContent = interactive?.getAttribute('data-cursor') || (interactive ? 'OPEN' : '');
       cursor.classList.toggle('has-label', Boolean(label.textContent));
     };
 
@@ -37,11 +34,9 @@ export default function SiteCursor() {
       cursor.classList.remove('is-visible');
       visible = false;
     };
-
     window.addEventListener('pointermove', move, { passive: true });
     document.addEventListener('pointerleave', hide);
     window.addEventListener('blur', hide);
-
     return () => {
       window.removeEventListener('pointermove', move);
       document.removeEventListener('pointerleave', hide);
@@ -52,16 +47,17 @@ export default function SiteCursor() {
 
   return (
     <div ref={cursorRef} className="site-cursor" aria-hidden="true">
-      <svg className="site-cursor-flame" viewBox="0 0 40 48" width="40" height="48">
-        <defs>
-          <linearGradient id="zenix-flame-green" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#F1FF8A" />
-            <stop offset=".42" stopColor="#D5FF00" />
-            <stop offset="1" stopColor="#83B900" />
-          </linearGradient>
-        </defs>
-        <path className="flame-outer" d="M21 1C23 11 36 14 35 28c-.8 11-7.5 18.5-17 18.5C7 46.5 1.5 39 2 29 2.4 21 7.4 15 12 10c-.5 7 1.8 10.3 5 11.4C20 16 23 10 21 1Z" fill="url(#zenix-flame-green)" />
-        <path className="flame-inner" d="M21 23c1.2 5.2 7.2 7.2 6.1 13.2-.7 4-3.4 6.5-7.4 6.5-4.4 0-7.1-3.3-6.4-7.4.5-3.2 2.6-5.2 4.4-7.1-.1 3.4 1.3 4.7 2.6 5.1 1.2-3.1 1.6-6.4.7-10.3Z" fill="#F2F0E9" opacity=".9" />
+      <svg className="site-cursor-art" viewBox="0 0 64 64" width="64" height="64">
+        <g className="pixel-flame">
+          <path fill="#315900" d="M8 20h4V12h4V4h8v8h4v8h8v8h8v4h8v8h8v8h-8v8h-8v4H24v-4h-8v-8h-4v-8H8v-8H4V24h4z"/>
+          <path fill="#75B900" d="M12 24h4V12h4V8h4v12h4v8h8v4h8v4h8v4h4v4h-8v8H28v-4h-8v-8h-4v-8h-4v-8h-4v-4h4z"/>
+          <path fill="#D5FF00" d="M20 28h4V16h4v12h4v8h8v4h8v4h4v4h-8v4H32v-4h-8v-8h-4v-8h-4v-4h4z"/>
+          <path fill="#B8F000" d="M48 8h8v4h-4v8h-8v-8h4z"/>
+          <path fill="#D5FF00" d="M48 12h4v4h-4z"/>
+        </g>
+        <path className="pointer-shadow" fill="#101820" d="M16 13 51 42 37 43 43 56 35 60 28 46 19 56Z"/>
+        <path className="pixel-pointer" fill="#F2F0E9" stroke="#101820" strokeWidth="2.5" strokeLinejoin="miter" d="M13 9 48 38 34 39 40 52 33 56 26 42 17 52Z"/>
+        <path fill="#D5FF00" d="M51 3h8v4h-4v8h-8V7h4z"/>
       </svg>
       <span ref={labelRef} className="site-cursor-label" />
     </div>
