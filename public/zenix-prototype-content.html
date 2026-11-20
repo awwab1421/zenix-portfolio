@@ -159,6 +159,15 @@ html, body, main, main > section, footer {
 }
 @media (hover:hover) and (pointer:fine) { html, body, body * { cursor: none !important; } }
 
+#zenix-pixel-cursor{position:fixed;left:0;top:0;z-index:999;width:64px;height:64px;margin:-8px 0 0 -8px;pointer-events:none;opacity:0;filter:drop-shadow(0 0 5px #D5FF0080)}
+#zenix-pixel-cursor.visible{opacity:1}
+#zenix-pixel-cursor svg{width:64px;height:64px;overflow:visible}
+#zenix-pixel-cursor .pixel-flame{transform-origin:30px 36px;animation:pixel-flame-flicker .34s steps(2,end) infinite alternate}
+#zenix-pixel-cursor b{position:absolute;left:46px;top:8px;padding:4px 7px;background:#0B0D0E;border:1px solid #D5FF00;color:#D5FF00;font:10px/1.2 var(--m);white-space:nowrap;opacity:0;transition:opacity .16s}
+#zenix-pixel-cursor.label-on b{opacity:1}
+@keyframes pixel-flame-flicker{from{transform:translateY(0) skewX(-2deg)}to{transform:translateY(-2px) skewX(2deg)}}
+@media(hover:hover) and (pointer:fine){html.zenix-pixel-cursor-on,html.zenix-pixel-cursor-on *{cursor:none!important}}
+@media(prefers-reduced-motion:reduce){#zenix-pixel-cursor .pixel-flame{animation:none!important}}
 </style>
 
 <script type="importmap">
@@ -395,6 +404,21 @@ createRoot(host).render(
     maxPixelCount: 900000
   })
 );
+</script>
+<div id="zenix-pixel-cursor" aria-hidden="true">
+<svg viewBox="0 0 64 64" width="64" height="64" shape-rendering="crispEdges">
+<g class="pixel-flame">
+<path fill="#315900" d="M8 20h4V12h4V4h8v8h4v8h8v8h8v4h8v8h8v8h-8v8h-8v4H24v-4h-8v-8h-4v-8H8v-8H4V24h4z"/>
+<path fill="#75B900" d="M12 24h4V12h4V8h4v12h4v8h8v4h8v4h8v4h4v4h-8v8H28v-4h-8v-8h-4v-8h-4v-8h-4v-4h4z"/>
+<path fill="#D5FF00" d="M20 28h4V16h4v12h4v8h8v4h8v4h4v4h-8v4H32v-4h-8v-8h-4v-8h-4v-4h4z"/>
+<path fill="#B8F000" d="M48 8h8v4h-4v8h-8v-8h4z"/><path fill="#D5FF00" d="M48 12h4v4h-4z"/>
+</g>
+<path fill="#101820" d="M16 13 51 42 37 43 43 56 35 60 28 46 19 56Z"/>
+<path fill="#F2F0E9" stroke="#101820" stroke-width="2.5" stroke-linejoin="miter" d="M13 9 48 38 34 39 40 52 33 56 26 42 17 52Z"/>
+<path fill="#D5FF00" d="M51 3h8v4h-4v8h-8V7h4z"/>
+</svg><b></b></div>
+<script>
+(()=>{const c=document.querySelector('#zenix-pixel-cursor'),label=c.querySelector('b');if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;document.documentElement.classList.add('zenix-pixel-cursor-on');addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;c.style.transform='translate3d('+e.clientX+'px,'+e.clientY+'px,0)';c.classList.add('visible');const t=e.target.closest('[data-cursor],a,button,[role=button]');label.textContent=t?.getAttribute('data-cursor')||(t?'OPEN':'');c.classList.toggle('label-on',!!label.textContent)},{passive:true});addEventListener('blur',()=>c.classList.remove('visible'));})();
 </script>
 </body>
 </html>
