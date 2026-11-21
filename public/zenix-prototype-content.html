@@ -37,7 +37,7 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .wall{opacity:.55}
 .lb{filter:blur(16px) brightness(.8)}
 .low-power .lb{filter:blur(8px) brightness(.82)}
-.low-power .ls{display:none}
+.low-power .ls{display:none}.low-power .lb{filter:blur(4px) brightness(.86)}.low-power #zenix-pixel-cursor .pixel-flame{animation:none}
 .ls{-webkit-mask-image:radial-gradient(circle 230px at var(--mx,-600px) var(--my,-600px),#000 35%,transparent);mask-image:radial-gradient(circle 230px at var(--mx,-600px) var(--my,-600px),#000 35%,transparent)}
 .tl{position:absolute;width:var(--w);left:var(--x);top:var(--y);transform:rotate(var(--r))}
 .in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;will-change:transform,opacity}
@@ -319,7 +319,7 @@ const tick=()=>$('#ck').textContent=f.format(new Date()),_=setInterval(tick,2000
 const hero=$('#hero'),L=[...document.querySelectorAll('.l')];
 let mx=-1,my=-1,sx=-600,sy=-600,px=0,py=0,qx=0,qy=0,hov=-1;
 const W=L.map(()=>100);
-if(FINE&&!RM){rootEl.classList.add('cur');
+if(FINE&&!RM&&!LOW_POWER){rootEl.classList.add('cur');
 addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;mx=e.clientX;my=e.clientY;
 const a=e.target.closest('#idx [data-i]');const h=a?+a.dataset.i:-1;if(h!==hov){hov=h;[...pv.children].forEach((c,j)=>c.style.display=j===h?'block':'none');pv.classList.toggle('on',h>=0)}requestFrame()});
 $('#idx').addEventListener('focusin',e=>{const a=e.target.closest('[data-i]');if(a){const h=+a.dataset.i;[...pv.children].forEach((c,j)=>c.style.display=j===h?'block':'none');pv.classList.add('on');px=innerWidth*.6;py=innerHeight*.2;pv.style.transform=`translate(${px}px,${py}px)`}});
@@ -345,7 +345,7 @@ const updateLetterCenters=()=>{letterCenters=L.map(l=>{const r=l.getBoundingClie
 const frame=()=>{raf=0;const sc=scrollY,p=Math.min(1,sc/innerHeight);
 if(sc<innerHeight){hero.firstElementChild.nextElementSibling.style.transform=`translateY(${p*14}vh)`;hero.firstElementChild.nextElementSibling.style.opacity=1-p*1.1}
 let moving=false;
-if(FINE&&!RM){
+if(FINE&&!RM&&!LOW_POWER){
 sx+=(mx-sx)*.12;sy+=(my-sy)*.12;
 if(!LOW_POWER){hero.style.setProperty('--mx',sx+'px');hero.style.setProperty('--my',sy+'px')}
 L.forEach((l,i)=>{const dx=mx<0?0:Math.abs(mx-letterCenters[i])/innerWidth,t=mx<0?.2:Math.exp(-Math.pow(dx/.2,2)/2),w=mx<0?100:66+86*t;W[i]+=(w-W[i])*.1;l.style.fontVariationSettings=`'wdth' ${W[i].toFixed(1)}`;if(Math.abs(w-W[i])>.7)moving=true});
@@ -370,40 +370,26 @@ document.addEventListener('click', function(event) {
 </script>
 
 <script type="module">
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { GrainGradient } from 'https://esm.sh/@paper-design/shaders-react@0.0.77?external=react';
-
-const host = document.createElement('div');
-host.id = 'zenix-grain-background';
-Object.assign(host.style, {
-  position: 'fixed',
-  inset: '0',
-  width: '100vw',
-  height: '100vh',
-  height: '100dvh',
-  zIndex: '0',
-  overflow: 'hidden',
-  pointerEvents: 'none'
-});
+/* Keep the animated shader off low-memory devices; the CSS fallback preserves the atmosphere. */
+const lowPower=(navigator.deviceMemory&&navigator.deviceMemory<=4)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4);
+const host=document.createElement('div');
+host.id='zenix-grain-background';
+Object.assign(host.style,{position:'fixed',inset:'0',width:'100vw',height:'100vh',height:'100dvh',zIndex:'0',overflow:'hidden',pointerEvents:'none'});
 document.body.prepend(host);
-
-createRoot(host).render(
-  React.createElement(GrainGradient, {
-    width: '100%',
-    height: '100%',
-    colors: ['#d4ff0091', '#d4ff0047', '#d4ff007a', '#d4ff00'],
-    colorBack: '#000000',
-    softness: 0.5,
-    intensity: 0.5,
-    noise: 0.25,
-    shape: 'corners',
-    speed: 1,
-    fit: 'cover',
-    minPixelRatio: 1,
-    maxPixelCount: 900000
-  })
-);
+if(lowPower){
+  host.style.background='radial-gradient(ellipse at 78% 12%,#53640055 0%,transparent 43%),radial-gradient(ellipse at 12% 88%,#26360066 0%,transparent 48%),#080a09';
+}else{
+  const [ReactDOM,shader]=await Promise.all([
+    import('https://esm.sh/react-dom@18.3.1/client'),
+    import('https://esm.sh/@paper-design/shaders-react@0.0.77?external=react')
+  ]);
+  const React=(await import('https://esm.sh/react@18.3.1')).default;
+  ReactDOM.createRoot(host).render(React.createElement(shader.GrainGradient,{
+    width:'100%',height:'100%',colors:['#d4ff0091','#d4ff0047','#d4ff007a','#d4ff00'],
+    colorBack:'#000000',softness:.5,intensity:.42,noise:.16,shape:'corners',
+    speed:.42,fit:'cover',minPixelRatio:1,maxPixelCount:420000
+  }));
+}
 </script>
 <div id="zenix-pixel-cursor" aria-hidden="true">
 <svg viewBox="0 0 64 64" width="64" height="64" shape-rendering="crispEdges">
