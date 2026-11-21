@@ -138,3 +138,7 @@ body{background:transparent;isolation:isolate}
 .site-cursor.has-label .site-cursor-label{opacity:1;transform:translateX(0)}
 @keyframes pixel-flame-flicker{from{transform:translateY(0) skewX(-2deg)}to{transform:translateY(-2px) skewX(2deg)}}
 @media(prefers-reduced-motion:reduce){.pixel-flame{animation:none!important}.site-cursor,.site-cursor-label{transition:none!important}}
+
+/* The homepage iframe has its own grain treatment; avoid rendering a second shader behind it. */
+body:has(.prototype-shell) .site-grain-background{display:none}
+@media(prefers-reduced-motion:reduce){.site-grain-background{display:none}}
