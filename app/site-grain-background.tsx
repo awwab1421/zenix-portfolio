@@ -16,13 +16,13 @@ export default function SiteGrainBackground() {
         colors={["#d4ff0091", "#d4ff0047", "#d4ff007a", "#d4ff00"]}
         colorBack="#000000"
         softness={0.5}
-        intensity={0.5}
-        noise={0.25}
+        intensity={0.42}
+        noise={0.16}
         shape="corners"
-        speed={1}
+        speed={0.42}
         fit="cover"
         minPixelRatio={1}
-        maxPixelCount={900000}
+        maxPixelCount={420000}
       />
     </div>
   );
