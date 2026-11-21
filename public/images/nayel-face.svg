@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 260">
+<rect width="240" height="260" fill="none"/>
+<g transform="rotate(-7 120 130)">
+<path d="M35 75Q40 20 120 24Q205 23 207 90L196 188Q180 235 119 235Q54 232 42 184Z" fill="#f2c49b" stroke="#17191a" stroke-width="8" stroke-linejoin="round"/>
+<path d="M45 83Q42 24 122 26Q190 25 203 77Q169 56 140 65Q86 43 45 83Z" fill="#202426"/>
+<path d="M66 111Q85 91 105 112" fill="none" stroke="#17191a" stroke-width="9" stroke-linecap="round"/>
+<path d="M139 111Q160 91 180 112" fill="none" stroke="#17191a" stroke-width="9" stroke-linecap="round"/>
+<ellipse cx="88" cy="128" rx="9" ry="13" fill="#17191a"/><ellipse cx="157" cy="128" rx="9" ry="13" fill="#17191a"/>
+<path d="M112 130L101 158Q119 169 134 156" fill="none" stroke="#a96d52" stroke-width="7" stroke-linecap="round"/>
+<path d="M77 183Q119 213 169 179Q158 222 117 215Q91 210 77 183Z" fill="#fff0db" stroke="#17191a" stroke-width="7" stroke-linejoin="round"/>
+<path d="M91 188Q121 199 155 187" fill="none" stroke="#17191a" stroke-width="4"/>
+<circle cx="62" cy="159" r="10" fill="#ef8d79" opacity=".8"/><circle cx="177" cy="159" r="10" fill="#ef8d79" opacity=".8"/>
+</g>
+<text x="120" y="253" text-anchor="middle" fill="#D5FF00" font-family="monospace" font-size="9">TEMPORARY MEME FACE</text>
+</svg>
